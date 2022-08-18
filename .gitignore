@@ -1,5 +1,5 @@
-.terraform/
-terraform.tfstate*
-secrets*
+*terraform*
 tfplan
+secrets*
 *.log
+*.pem

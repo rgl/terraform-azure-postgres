@@ -63,7 +63,12 @@ Connect to it:
 
 ```powershell
 # see https://www.postgresql.org/docs/14/libpq-envars.html
-# see https://cloud.google.com/sql/docs/postgres/connect-admin-ip?authuser=2#connect-ssl
+# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+$cacertsUrl = 'https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
+$cacertsPath = Split-Path -Leaf $cacertsUrl
+(New-Object Net.WebClient).DownloadFile($cacertsUrl, $cacertsPath)
+$env:PGSSLMODE = 'verify-full'
+$env:PGSSLROOTCERT = $cacertsPath
 $env:PGHOST = terraform output --raw fqdn
 $env:PGDATABASE = 'postgres'
 $env:PGUSER = 'postgres'
