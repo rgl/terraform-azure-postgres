@@ -95,3 +95,10 @@ Destroy everything:
 ```powershell
 terraform destroy
 ```
+
+# Reference
+
+* [Terraform azurerm_postgresql_flexible_server resource documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server)
+* [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)
+* [Azure Database for PostgreSQL Product Page](https://azure.microsoft.com/en-us/services/postgresql/)
+* [Azure Database for PostgreSQL Flexible Server SKUs](https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku)
