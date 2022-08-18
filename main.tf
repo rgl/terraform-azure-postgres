@@ -45,6 +45,10 @@ output "password" {
   sensitive = true
 }
 
+resource "random_id" "postgres" {
+  byte_length = 8
+}
+
 resource "random_password" "postgres" {
   min_upper = 1
   min_lower = 1
@@ -61,9 +65,10 @@ resource "azurerm_resource_group" "example" {
 
 # see https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server
 resource "azurerm_postgresql_flexible_server" "example" {
-  # NB this resource name MUST be unique between all the azure users as it
-  #    will be available at $name.postgres.database.azure.com.
-  name = "example"
+  # NB this name must be unique within azure.
+  # NB it will be used as part of the domain name as $name.postgres.database.azure.com.
+  # NB this name must be 3-63 characters long.
+  name = "example${random_id.postgres.hex}"
   resource_group_name = azurerm_resource_group.example.name
   location = azurerm_resource_group.example.location
   zone = "1"
