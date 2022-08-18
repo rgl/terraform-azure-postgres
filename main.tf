@@ -46,9 +46,11 @@ output "password" {
 }
 
 resource "random_password" "postgres" {
-  keepers = {
-    resource_group = azurerm_resource_group.example.name
-  }
+  min_upper = 1
+  min_lower = 1
+  min_numeric = 1
+  min_special = 1
+  # NB must be between 8-128.
   length = 16
 }
 
