@@ -50,6 +50,10 @@ Provision the example infrastructure:
 $env:CHECKPOINT_DISABLE = '1'
 $env:TF_LOG = 'TRACE'
 $env:TF_LOG_PATH = 'terraform.log'
+$env:TF_VAR_region = 'northeurope'
+# NB make sure the selected region has this zone available. when its not
+#    available, the deployment will fail with InternalServerError.
+$env:TF_VAR_zone = '1'
 terraform init
 terraform plan -out=tfplan
 terraform apply tfplan

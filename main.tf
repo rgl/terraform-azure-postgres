@@ -24,7 +24,15 @@ provider "azurerm" {
 # NB you can test the relative speed from you browser to a location using https://azurespeedtest.azurewebsites.net/
 # get the available locations with: az account list-locations --output table
 variable "location" {
-  default = "France Central" # see https://azure.microsoft.com/en-us/global-infrastructure/france/
+  default = "northeurope"
+}
+
+# NB this depends on the location.
+# NB if the location does not have this zone the deployment will fail with:
+#      Server Name: "example83f433c0bc329d86"): polling after Create: Code="InternalServerError" Message="An unexpected error occured while processing the request. Tracking ID: '1f65426f-cfd8-41fb-9952-2fbc8df9bb6d'"
+# NB you can see the available zones in the azure portal postgres instance creation page.
+variable "zone" {
+  default = "1"
 }
 
 # NB this name must be unique within the Azure subscription.
@@ -71,7 +79,12 @@ resource "azurerm_postgresql_flexible_server" "example" {
   name = "example${random_id.postgres.hex}"
   resource_group_name = azurerm_resource_group.example.name
   location = azurerm_resource_group.example.location
-  zone = "1"
+  # NB the available zones are region/location specific. for example, at the
+  #    time this was tested, the francecentral region/location ONLY had ONE
+  #    zone available, and it was zone 2. because of this, if the zone you
+  #    define here is not available, the deployment fails with:
+  #     Server Name: "example83f433c0bc329d86"): polling after Create: Code="InternalServerError" Message="An unexpected error occured while processing the request. Tracking ID: '1f65426f-cfd8-41fb-9952-2fbc8df9bb6d'"
+  zone = var.zone
   version = "14"
   administrator_login = "postgres"
   administrator_password = random_password.postgres.result
