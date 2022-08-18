@@ -88,6 +88,7 @@ resource "azurerm_postgresql_flexible_server" "example" {
   version = "14"
   administrator_login = "postgres"
   administrator_password = random_password.postgres.result
+  backup_retention_days = 7
   // Development (aka Burstable) sku.
   // 1 vCores, 2 GiB RAM, 32 GiB storage.
   // see https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku
