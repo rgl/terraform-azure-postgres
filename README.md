@@ -1,6 +1,6 @@
 # About
 
-This creates an example Azure Database for PostgreSQL Flexible Server instance using the terraform azurerm provider.
+This creates an example [Azure Database for PostgreSQL Flexible Server](https://azure.microsoft.com/en-us/services/postgresql/) instance using the [Terraform azurerm provider](https://registry.terraform.io/providers/hashicorp/azurerm).
 
 This will:
 
