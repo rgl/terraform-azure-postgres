@@ -17,6 +17,7 @@ For further managing the PostgreSQL instance, you could use:
 For equivalent examples see:
 
 * pulumi azure-native: https://github.com/rgl/pulumi-typescript-azure-native-postgres
+* pulumi azure-classic: https://github.com/rgl/pulumi-typescript-azure-classic-postgres
 
 # Usage (Windows)
 
