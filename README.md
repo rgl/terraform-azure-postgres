@@ -1,5 +1,7 @@
 # About
 
+[![Lint](https://github.com/rgl/terraform-azure-postgres/actions/workflows/lint.yml/badge.svg)](https://github.com/rgl/terraform-azure-postgres/actions/workflows/lint.yml)
+
 This creates an example [Azure Database for PostgreSQL Flexible Server](https://azure.microsoft.com/en-us/services/postgresql/) instance using the [Terraform azurerm provider](https://registry.terraform.io/providers/hashicorp/azurerm).
 
 This will:
@@ -27,6 +29,7 @@ Install the dependencies:
 ```powershell
 choco install -y azure-cli --version 2.39.0
 choco install -y terraform --version 1.2.6
+choco install -y tflint --version 0.35.0
 choco install -y postgresql14 --version 14.5.1 `
     --install-arguments @(
             '--enable-components commandlinetools'
@@ -67,6 +70,8 @@ az postgres flexible-server list-skus `
 # NB make sure the selected region has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 $env:TF_VAR_zone = '1'
+tflint --init
+tflint --loglevel trace
 terraform init
 # provision.
 terraform plan -out=tfplan
