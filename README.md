@@ -28,6 +28,7 @@ Install the dependencies:
 choco install -y azure-cli --version 2.39.0
 choco install -y terraform --version 1.2.6
 choco install -y postgresql14 --ia '--enable-components commandlinetools'
+choco install -y jq --version 1.6
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
 ```
@@ -52,11 +53,18 @@ Provision the example infrastructure:
 $env:CHECKPOINT_DISABLE = '1'
 $env:TF_LOG = 'TRACE'
 $env:TF_LOG_PATH = 'terraform.log'
+# set the region.
 $env:TF_VAR_region = 'northeurope'
+# show the available zones in the given region/location.
+az postgres flexible-server list-skus `
+  --location "$(pulumi config get azure-native:location)" `
+  | jq -r '.[].zone'
+# set the zone.
 # NB make sure the selected region has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 $env:TF_VAR_zone = '1'
 terraform init
+# provision.
 terraform plan -out=tfplan
 terraform apply tfplan
 ```
