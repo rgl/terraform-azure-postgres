@@ -22,6 +22,103 @@ For equivalent examples see:
 * [pulumi google-native](https://github.com/rgl/pulumi-typescript-google-postgres)
 * [terraform gcp](https://github.com/rgl/terraform-gcp-cloud-sql-postgres)
 
+# Table Of Contents
+
+* [Usage (Ubuntu)](#usage-ubuntu)
+* [Usage (Windows)](#usage-windows)
+* [References](#references)
+
+# Usage (Ubuntu)
+
+Install dependencies:
+
+* `az` (see [my ubuntu ansible azure-client role](https://github.com/rgl/my-ubuntu-ansible-playbooks/tree/main/roles/azure-client))
+* `terraform` (see [my ubuntu ansible terraform role](https://github.com/rgl/my-ubuntu-ansible-playbooks/tree/main/roles/terraform))
+
+Install more dependencies:
+
+```bash
+sudo apt-get install -y postgresql-client-14
+sudo apt-get install -y jq
+npm ci
+```
+
+Login into Azure:
+
+```bash
+az login
+```
+
+List the subscriptions and select the currect one.
+
+```bash
+az account list --all
+az account show
+az account set --subscription <YOUR-SUBSCRIPTION-ID>
+```
+
+Provision the example infrastructure:
+
+```bash
+export CHECKPOINT_DISABLE='1'
+export TF_LOG='TRACE'
+export TF_LOG_PATH='terraform.log'
+# set the region.
+export TF_VAR_region='northeurope'
+# show the available zones in the given region/location.
+az postgres flexible-server list-skus \
+  --location $TF_VAR_region \
+  | jq -r '.[].zone'
+# set the zone.
+# NB make sure the selected region has this zone available. when its not
+#    available, the deployment will fail with InternalServerError.
+export TF_VAR_zone='1'
+# initialize.
+terraform init
+# provision.
+terraform plan -out=tfplan
+terraform apply tfplan
+```
+
+Connect to it:
+
+```bash
+# see https://www.postgresql.org/docs/14/libpq-envars.html
+# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
+cacerts_path="$(basename "$cacerts_url")"
+wget "$cacerts_url" -O "$cacerts_path"
+export PGSSLMODE='verify-full'
+export PGSSLROOTCERT="$cacerts_path"
+export PGHOST="$(terraform output --raw fqdn)"
+export PGDATABASE='postgres'
+export PGUSER='postgres'
+export PGPASSWORD="$(terraform output --raw password)"
+psql
+```
+
+Execute example queries:
+
+```sql
+select version();
+select current_user;
+select case when ssl then concat('YES (', version, ')') else 'NO' end as ssl from pg_stat_ssl where pid=pg_backend_pid();
+show password_encryption;
+select * from azure_roles_authtype() where rolename=current_user;
+```
+
+Exit the `psql` session:
+
+```sql
+exit
+```
+
+Destroy everything:
+
+```bash
+terraform destroy
+```
+
 # Usage (Windows)
 
 Install the dependencies:
@@ -64,7 +161,7 @@ $env:TF_LOG_PATH = 'terraform.log'
 $env:TF_VAR_region = 'northeurope'
 # show the available zones in the given region/location.
 az postgres flexible-server list-skus `
-  --location "$(pulumi config get azure-native:location)" `
+  --location $env:TF_VAR_region `
   | jq -r '.[].zone'
 # set the zone.
 # NB make sure the selected region has this zone available. when its not
@@ -115,7 +212,7 @@ Destroy everything:
 terraform destroy
 ```
 
-# Reference
+# References
 
 * [Terraform azurerm_postgresql_flexible_server resource documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server)
 * [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)
