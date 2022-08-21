@@ -14,7 +14,8 @@ This will:
 
 For further managing the PostgreSQL instance, you could use:
 
-* The [community.postgresql Ansible Collection](https://galaxy.ansible.com/community/postgresql) as in [rgl/ansible-init-postgres](https://github.com/rgl/ansible-init-postgres).
+* The [cyrilgdn/postgresql Terraform provider](https://registry.terraform.io/providers/cyrilgdn/postgresql).
+* The [community.postgresql Ansible collection](https://galaxy.ansible.com/community/postgresql) as in [rgl/ansible-init-postgres](https://github.com/rgl/ansible-init-postgres).
 
 For equivalent examples see:
 
