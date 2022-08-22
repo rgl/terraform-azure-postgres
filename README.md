@@ -129,10 +129,10 @@ choco install -y azure-cli --version 2.39.0
 choco install -y terraform --version 1.2.6
 choco install -y tflint --version 0.35.0
 choco install -y postgresql14 --version 14.5.1 `
-    --install-arguments @(
+    --install-arguments "'$(@(
             '--enable-components commandlinetools'
             '--disable-components server'
-        ) -join ' '
+        ) -join ' ')'"
 choco install -y jq --version 1.6
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
