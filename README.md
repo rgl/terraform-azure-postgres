@@ -65,10 +65,10 @@ export CHECKPOINT_DISABLE='1'
 export TF_LOG='TRACE'
 export TF_LOG_PATH='terraform.log'
 # set the region.
-export TF_VAR_region='northeurope'
+export TF_VAR_location='northeurope'
 # show the available zones in the given region/location.
 az postgres flexible-server list-skus \
-  --location $TF_VAR_region \
+  --location $TF_VAR_location \
   | jq -r '.[].zone'
 # set the zone.
 # NB make sure the selected region has this zone available. when its not
@@ -144,7 +144,7 @@ Login into Azure:
 az login
 ```
 
-List the subscriptions and select the currect one.
+List the subscriptions and select the correct one.
 
 ```powershell
 az account list --all
@@ -159,10 +159,10 @@ $env:CHECKPOINT_DISABLE = '1'
 $env:TF_LOG = 'TRACE'
 $env:TF_LOG_PATH = 'terraform.log'
 # set the region.
-$env:TF_VAR_region = 'northeurope'
+$env:TF_VAR_location = 'northeurope'
 # show the available zones in the given region/location.
 az postgres flexible-server list-skus `
-  --location $env:TF_VAR_region `
+  --location $env:TF_VAR_location `
   | jq -r '.[].zone'
 # set the zone.
 # NB make sure the selected region has this zone available. when its not
