@@ -41,7 +41,6 @@ Install more dependencies:
 ```bash
 sudo apt-get install -y postgresql-client-14
 sudo apt-get install -y jq
-npm ci
 ```
 
 Login into Azure:
@@ -125,9 +124,9 @@ terraform destroy
 Install the dependencies:
 
 ```powershell
-choco install -y azure-cli --version 2.39.0
-choco install -y terraform --version 1.2.6
-choco install -y tflint --version 0.35.0
+choco install -y azure-cli --version 2.44.1
+choco install -y terraform --version 1.3.7
+choco install -y tflint --version 0.42.2
 choco install -y postgresql14 --version 14.5.1 `
     --install-arguments "'$(@(
             '--enable-components commandlinetools'

@@ -11,10 +11,10 @@ jobs:
         with:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
-      - uses: terraform-linters/setup-tflint@v2
+      - uses: terraform-linters/setup-tflint@v3
         name: Setup
         with:
-          tflint_version: v0.35.0
+          tflint_version: v0.44.1
       - name: Init
         run: tflint --init
       - name: Lint

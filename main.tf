@@ -1,18 +1,18 @@
 # see https://github.com/hashicorp/terraform
 terraform {
-  required_version = "1.2.6"
+  required_version = "1.3.7"
   required_providers {
     # see https://github.com/hashicorp/terraform-provider-random
     # see https://registry.terraform.io/providers/hashicorp/random
     random = {
       source  = "hashicorp/random"
-      version = "3.3.2"
+      version = "3.4.3"
     }
     # see https://github.com/terraform-providers/terraform-provider-azurerm
     # see https://registry.terraform.io/providers/hashicorp/azurerm
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.18.0"
+      version = "3.42.0"
     }
   }
 }
@@ -53,19 +53,21 @@ output "password" {
   sensitive = true
 }
 
+# see https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id
 resource "random_id" "postgres" {
   byte_length = 8
 }
 
+# see https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password
 resource "random_password" "postgres" {
   min_upper = 1
   min_lower = 1
   min_numeric = 1
   min_special = 1
-  # NB must be between 8-128.
-  length = 16
+  length = 16 # NB must be between 8-128.
 }
 
+# see https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group
 resource "azurerm_resource_group" "example" {
   name = var.resource_group_name # NB this name must be unique within the Azure subscription.
   location = var.location
