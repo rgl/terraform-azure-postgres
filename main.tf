@@ -93,7 +93,7 @@ resource "azurerm_postgresql_flexible_server" "example" {
   backup_retention_days = 7
   # NB sku_name is <TIER>_<NAME>, e.g. B_Standard_B1ms, GP_Standard_D2s_v3, MO_Standard_E4s_v3.
   # see az postgres flexible-server list-skus --output table --location northeurope
-  # see https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku
+  # see https://learn.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2022-12-01/flexibleservers#sku
   sku_name = "B_Standard_B1ms" # 1 vCores, 2 GiB RAM.
   storage_mb = 32*1024
 }

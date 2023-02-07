@@ -84,7 +84,7 @@ Connect to it:
 
 ```bash
 # see https://www.postgresql.org/docs/14/libpq-envars.html
-# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 cacerts_path="$(basename "$cacerts_url")"
 wget "$cacerts_url" -O "$cacerts_path"
@@ -179,7 +179,7 @@ Connect to it:
 
 ```powershell
 # see https://www.postgresql.org/docs/14/libpq-envars.html
-# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 $cacertsUrl = 'https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 $cacertsPath = Split-Path -Leaf $cacertsUrl
 (New-Object Net.WebClient).DownloadFile($cacertsUrl, $cacertsPath)
@@ -215,6 +215,6 @@ terraform destroy
 # References
 
 * [Terraform azurerm_postgresql_flexible_server resource documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server)
-* [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)
+* [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)
 * [Azure Database for PostgreSQL Product Page](https://azure.microsoft.com/en-us/services/postgresql/)
-* [Azure Database for PostgreSQL Flexible Server SKUs](https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku)
+* [Azure Database for PostgreSQL Flexible Server SKUs](https://learn.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2022-12-01/flexibleservers#sku)
