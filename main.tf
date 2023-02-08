@@ -24,6 +24,7 @@ provider "azurerm" {
 # NB you can test the relative speed from you browser to a location using https://azurespeedtest.azurewebsites.net/
 # get the available locations with: az account list-locations --output table
 variable "location" {
+  type = string
   default = "northeurope"
 }
 
@@ -32,12 +33,14 @@ variable "location" {
 #      Server Name: "example83f433c0bc329d86"): polling after Create: Code="InternalServerError" Message="An unexpected error occured while processing the request. Tracking ID: '1f65426f-cfd8-41fb-9952-2fbc8df9bb6d'"
 # NB you can see the available zones in the azure portal postgres instance creation page.
 variable "zone" {
+  type = string
   default = "1"
 }
 
 # NB this name must be unique within the Azure subscription.
 #    all the other names must be unique within this resource group.
 variable "resource_group_name" {
+  type = string
   default = "rgl-terraform-azure-postgres"
 }
 
