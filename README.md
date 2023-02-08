@@ -218,3 +218,4 @@ terraform destroy
 * [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)
 * [Azure Database for PostgreSQL Product Page](https://azure.microsoft.com/en-us/services/postgresql/)
 * [Azure Database for PostgreSQL Flexible Server SKUs](https://learn.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2022-12-01/flexibleservers#sku)
+* [Azure Database for PostgreSQL Release Notes](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/release-notes)
