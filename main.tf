@@ -44,9 +44,6 @@ variable "resource_group_name" {
   default = "rgl-terraform-azure-postgres"
 }
 
-data "azurerm_client_config" "current" {
-}
-
 output "fqdn" {
   value = azurerm_postgresql_flexible_server.example.fqdn
 }
