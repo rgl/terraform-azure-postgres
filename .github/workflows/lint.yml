@@ -17,5 +17,8 @@ jobs:
           tflint_version: v0.45.0
       - name: Init
         run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Lint
         run: tflint --format compact
