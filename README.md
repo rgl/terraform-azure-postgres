@@ -49,7 +49,7 @@ Login into Azure:
 az login
 ```
 
-List the subscriptions and select the currect one.
+List the subscriptions and select the correct one.
 
 ```bash
 az account list --all
