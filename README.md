@@ -39,7 +39,7 @@ Install dependencies:
 Install more dependencies:
 
 ```bash
-sudo apt-get install -y postgresql-client-14
+sudo apt-get install -y postgresql-client
 sudo apt-get install -y jq
 ```
 
@@ -83,7 +83,7 @@ terraform apply tfplan
 Connect to it:
 
 ```bash
-# see https://www.postgresql.org/docs/14/libpq-envars.html
+# see https://www.postgresql.org/docs/15/libpq-envars.html
 # see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 cacerts_path="$(basename "$cacerts_url")"
@@ -127,7 +127,7 @@ Install the dependencies:
 choco install -y azure-cli --version 2.52.0
 choco install -y terraform --version 1.5.6
 choco install -y tflint --version 0.48.0
-choco install -y postgresql14 --version 14.5.1 `
+choco install -y postgresql15 --version 15.0.1 `
     --install-arguments "'$(@(
             '--enable-components commandlinetools'
             '--disable-components server'
@@ -178,7 +178,7 @@ terraform apply tfplan
 Connect to it:
 
 ```powershell
-# see https://www.postgresql.org/docs/14/libpq-envars.html
+# see https://www.postgresql.org/docs/15/libpq-envars.html
 # see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 $cacertsUrl = 'https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 $cacertsPath = Split-Path -Leaf $cacertsUrl

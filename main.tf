@@ -87,7 +87,7 @@ resource "azurerm_postgresql_flexible_server" "example" {
   #    define here is not available, the deployment fails with:
   #     Server Name: "example83f433c0bc329d86"): polling after Create: Code="InternalServerError" Message="An unexpected error occured while processing the request. Tracking ID: '1f65426f-cfd8-41fb-9952-2fbc8df9bb6d'"
   zone                   = var.zone
-  version                = "14"
+  version                = "15"
   administrator_login    = "postgres"
   administrator_password = random_password.postgres.result
   backup_retention_days  = 7
