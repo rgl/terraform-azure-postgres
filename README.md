@@ -124,9 +124,9 @@ terraform destroy
 Install the dependencies:
 
 ```powershell
-choco install -y azure-cli --version 2.44.1
-choco install -y terraform --version 1.3.7
-choco install -y tflint --version 0.42.2
+choco install -y azure-cli --version 2.52.0
+choco install -y terraform --version 1.5.6
+choco install -y tflint --version 0.48.0
 choco install -y postgresql14 --version 14.5.1 `
     --install-arguments "'$(@(
             '--enable-components commandlinetools'
