@@ -68,13 +68,13 @@ export TF_VAR_location='northeurope'
 # show the available zones in the given region/location.
 az postgres flexible-server list-skus \
   --location $TF_VAR_location \
-  | jq -r '.[].zone'
+  | jq -r '.[].supportedServerEditions[].supportedServerSkus[].supportedZones'
 # set the zone.
 # NB make sure the selected region has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 export TF_VAR_zone='1'
 # initialize.
-terraform init
+terraform init -lockfile=readonly
 # provision.
 terraform plan -out=tfplan
 terraform apply tfplan
@@ -124,15 +124,15 @@ terraform destroy
 Install the dependencies:
 
 ```powershell
-choco install -y azure-cli --version 2.52.0
-choco install -y terraform --version 1.5.6
-choco install -y tflint --version 0.48.0
+choco install -y azure-cli --version 2.54.0
+choco install -y terraform --version 1.6.5
+choco install -y tflint --version 0.49.0
 choco install -y postgresql15 --version 15.0.1 `
     --install-arguments "'$(@(
             '--enable-components commandlinetools'
             '--disable-components server'
         ) -join ' ')'"
-choco install -y jq --version 1.6
+choco install -y jq --version 1.7.0
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
 ```

@@ -18,11 +18,11 @@ jobs:
         with:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
-      - uses: terraform-linters/setup-tflint@v3
+      - uses: terraform-linters/setup-tflint@v4
         name: Setup
         with:
           # see https://github.com/terraform-linters/tflint/releases
-          tflint_version: v0.48.0
+          tflint_version: v0.49.0
       - name: Init
         run: tflint --init
         env:

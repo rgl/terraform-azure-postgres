@@ -1,4 +1,6 @@
-*terraform*
+.terraform/
+.terraform.tfstate*
+terraform.*
 tfplan
 secrets*
 *.log
