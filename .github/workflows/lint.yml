@@ -22,7 +22,7 @@ jobs:
         name: Setup
         with:
           # see https://github.com/terraform-linters/tflint/releases
-          tflint_version: v0.49.0
+          tflint_version: v0.53.0
       - name: Init
         run: tflint --init
         env:

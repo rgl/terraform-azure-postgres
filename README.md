@@ -49,12 +49,18 @@ Login into Azure:
 az login
 ```
 
-List the subscriptions and select the correct one.
+List the subscriptions:
 
 ```bash
 az account list --all
 az account show
-az account set --subscription <YOUR-SUBSCRIPTION-ID>
+```
+
+Set the subscription:
+
+```bash
+export ARM_SUBSCRIPTION_ID="<YOUR-SUBSCRIPTION-ID>"
+az account set --subscription "$ARM_SUBSCRIPTION_ID"
 ```
 
 Provision the example infrastructure:
@@ -85,9 +91,23 @@ Connect to it:
 ```bash
 # see https://www.postgresql.org/docs/16/libpq-envars.html
 # see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
-cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
-cacerts_path="$(basename "$cacerts_url")"
-wget "$cacerts_url" -O "$cacerts_path"
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-networking-ssl-tls#download-root-ca-certificates-and-update-application-clients-in-certificate-pinning-scenarios
+cacerts_path="cacerts.pem"
+cacerts_urls=(
+  https://www.microsoft.com/pkiops/certs/Microsoft%20RSA%20Root%20Certificate%20Authority%202017.crt
+  https://cacerts.digicert.com/DigiCertGlobalRootG2.crt.pem
+  https://cacerts.digicert.com/DigiCertGlobalRootCA.crt
+)
+user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+{
+  for url in "${cacerts_urls[@]}"; do
+    if [[ $url == *.crt ]]; then
+      wget -qO- --user-agent="$user_agent" "$url" | openssl x509 -inform DER -outform PEM
+    else
+      wget -qO- --user-agent="$user_agent" "$url"
+    fi
+  done
+} > "$cacerts_path"
 export PGSSLMODE='verify-full'
 export PGSSLROOTCERT="$cacerts_path"
 export PGHOST="$(terraform output --raw fqdn)"
@@ -124,15 +144,15 @@ terraform destroy
 Install the dependencies:
 
 ```powershell
-choco install -y azure-cli --version 2.54.0
-choco install -y terraform --version 1.6.5
-choco install -y tflint --version 0.49.0
-choco install -y postgresql16 --version 16.0.0 `
+choco install -y azure-cli --version 2.64.0
+choco install -y terraform --version 1.9.6
+choco install -y tflint --version 0.53.0
+choco install -y postgresql16 --version 16.1.0 `
     --install-arguments "'$(@(
             '--enable-components commandlinetools'
             '--disable-components server'
         ) -join ' ')'"
-choco install -y jq --version 1.7.0
+choco install -y jq --version 1.7.1
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
 ```
