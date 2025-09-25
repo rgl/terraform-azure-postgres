@@ -91,16 +91,26 @@ resource "azurerm_postgresql_flexible_server" "example" {
   administrator_login    = "postgres"
   administrator_password = random_password.postgres.result
   backup_retention_days  = 7
-  # NB sku_name is <TIER>_<NAME>, e.g. B_Standard_B1ms, GP_Standard_D2s_v3, MO_Standard_E4s_v3.
+  # NB sku_name is <TIER>_<NAME>, e.g. B_Standard_B1ms, GP_Standard_D2ds_v5, MO_Standard_E2ds_v5.
   # see az postgres flexible-server list-skus --output table --location northeurope
   # see https://learn.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2022-12-01/flexibleservers#sku
-  sku_name   = "B_Standard_B1ms" # 1 vCores, 2 GiB RAM.
+  sku_name   = "GP_Standard_D2ds_v5" # 2 vCores, 8 GiB RAM.
   storage_mb = 32 * 1024
 }
 
+# NB PgBouncer cannot be enabled in the burstable compute tier (e.g. B_Standard_B1ms).
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/server-parameters-table-pgbouncer?pivots=postgresql-16#pgbouncerenabled
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-pgbouncer
+# see https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration
+resource "azurerm_postgresql_flexible_server_configuration" "example_pgbouncer_enabled" {
+  server_id = azurerm_postgresql_flexible_server.example.id
+  name      = "pgbouncer.enabled"
+  value     = "true"
+}
+
 resource "azurerm_postgresql_flexible_server_firewall_rule" "all" {
-  name             = "all"
   server_id        = azurerm_postgresql_flexible_server.example.id
+  name             = "all"
   start_ip_address = "0.0.0.0"
   end_ip_address   = "255.255.255.255"
 }

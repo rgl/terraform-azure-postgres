@@ -9,6 +9,7 @@ This will:
 * Create a public PostgreSQL instance.
 * Configure the PostgresSQL instance to require TLS.
 * Enable automated backups.
+* Enable PgBouncer.
 * Set a random `postgres` account password.
 * Show how to connect to the created PostgreSQL instance using `psql`.
 
@@ -99,6 +100,7 @@ cacerts_urls=(
   https://cacerts.digicert.com/DigiCertGlobalRootCA.crt
 )
 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+rm -f *.pem
 {
   for url in "${cacerts_urls[@]}"; do
     if [[ $url == *.crt ]]; then
@@ -111,6 +113,9 @@ user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 export PGSSLMODE='verify-full'
 export PGSSLROOTCERT="$cacerts_path"
 export PGHOST="$(terraform output --raw fqdn)"
+# NB PostgreSQL is available at port 5432.
+# NB PgBouncer is available at port 6432.
+export PGPORT="6432"
 export PGDATABASE='postgres'
 export PGUSER='postgres'
 export PGPASSWORD="$(terraform output --raw password)"
@@ -122,7 +127,13 @@ Execute example queries:
 ```sql
 select version();
 select current_user;
-select case when ssl then concat('YES (', version, ')') else 'NO' end as ssl from pg_stat_ssl where pid=pg_backend_pid();
+-- NB when using pgbouncer, pgbouncer connects to the local postgresql unix
+--    socket, hence ssl will be NO. thou, your psql client connection to
+--    pgbouncer should still use ssl and show something like:
+--      SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+select
+  case when inet_client_addr() is null then 'local-unix-socket' else inet_client_addr()::text end as client_address,
+  case when ssl then concat('YES (', version, ')') else 'NO' end as ssl from pg_stat_ssl where pid=pg_backend_pid();
 show password_encryption;
 select * from azure_roles_authtype() where rolename=current_user;
 ```
@@ -206,6 +217,9 @@ $cacertsPath = Split-Path -Leaf $cacertsUrl
 $env:PGSSLMODE = 'verify-full'
 $env:PGSSLROOTCERT = $cacertsPath
 $env:PGHOST = terraform output --raw fqdn
+# NB PostgreSQL is available at port 5432.
+# NB PgBouncer is available at port 6432.
+$env:PGPORT = '6432'
 $env:PGDATABASE = 'postgres'
 $env:PGUSER = 'postgres'
 $env:PGPASSWORD = terraform output --raw password
@@ -217,7 +231,13 @@ Execute example queries:
 ```sql
 select version();
 select current_user;
-select case when ssl then concat('YES (', version, ')') else 'NO' end as ssl from pg_stat_ssl where pid=pg_backend_pid();
+-- NB when using pgbouncer, pgbouncer connects to the local postgresql unix
+--    socket, hence ssl will be NO. thou, your psql client connection to
+--    pgbouncer should still use ssl and show something like:
+--      SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+select
+  case when inet_client_addr() is null then 'local-unix-socket' else inet_client_addr()::text end as client_address,
+  case when ssl then concat('YES (', version, ')') else 'NO' end as ssl from pg_stat_ssl where pid=pg_backend_pid();
 ```
 
 Exit the `psql` session:
