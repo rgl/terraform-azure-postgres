@@ -144,15 +144,15 @@ terraform destroy
 Install the dependencies:
 
 ```powershell
-choco install -y azure-cli --version 2.64.0
-choco install -y terraform --version 1.9.6
-choco install -y tflint --version 0.53.0
-choco install -y postgresql16 --version 16.1.0 `
+choco install -y azure-cli --version 2.77.0
+choco install -y terraform --version 1.13.3
+choco install -y tflint --version 0.59.1
+choco install -y postgresql16 --version 16.8.0 `
     --install-arguments "'$(@(
             '--enable-components commandlinetools'
             '--disable-components server'
         ) -join ' ')'"
-choco install -y jq --version 1.7.1
+choco install -y jq --version 1.8.1
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
 ```
